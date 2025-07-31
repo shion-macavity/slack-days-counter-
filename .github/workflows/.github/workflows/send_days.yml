@@ -1,0 +1,19 @@
+name: Send Days to Slack
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # UTC0時=日本9時に実行
+  workflow_dispatch:        # 手動実行も可能
+
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: pip install slack_sdk
+      - run: python send_days.py
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
